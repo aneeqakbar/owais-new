@@ -1,0 +1,152 @@
+{% extends 'dashboard/layout.html' %}
+{% load static %}
+
+{% block head %}
+<style>
+    #client_data_table {
+        font-size: 0.8em;
+    }
+</style>
+{% endblock %}
+
+{% block heading %} 
+Client Data
+{% endblock %}
+
+
+{% block content %}
+<p class="text-danger">
+  <small>
+    Only 500 data entries will be shown because its a test server.
+  </small>
+</p>
+
+
+<div class="table-responsive">
+    <table id="client_data_table" class="display compact hover nowrap table table-bordered table-striped my-4" style="width: 100%;">
+        <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Record ID</th>
+              <th scope="col">Sheet Name</th>
+              <th scope="col">Datensatztyp</th>
+              <th scope="col">Kampagnen-ID</th>
+              <th scope="col">Kampagne:Kampagnename</th>
+              <th scope="col">Kampagnentyp</th>
+              <th scope="col">Anzeigenformat</th>
+              <th scope="col">Budget</th>
+              <th scope="col">Portfolio-ID</th>
+              <th scope="col">Kampagnenstartdatum</th>
+              <th scope="col">Kampagnenenddatum</th>
+              <th scope="col">Budget-Typ</th>
+              <th scope="col">URL der Landing Page</th>
+              <th scope="col">Landing Page-ASINs</th>
+              <th scope="col">Markenname</th>
+              <th scope="col">Markenidentitäts-ID</th>
+              <th scope="col">Markenlogo-Asset-ID</th>
+              <th scope="col">Headline</th>
+              <th scope="col">Anzeigendesign ASINs</th>
+              <th scope="col">Medien-ID</th>
+              <th scope="col">Automatisierte Gebote</th>
+              <th scope="col">Gebotsfaktor</th>
+              <th scope="col">Anzeigengruppe</th>
+              <th scope="col">Max. Gebot</th>
+              <th scope="col">Keyword</th>
+              <th scope="col">Übereinstimmungstyp</th>
+              <th scope="col">Kampagnenstatus</th>
+              <th scope="col">Bereitstellungsstatus</th>
+              <th scope="col">Status der Anzeigengruppe</th>
+              <th scope="col">Status</th>
+              <th scope="col">Impressions</th>
+              <th scope="col">Klicks</th>
+              <th scope="col">Ausgaben</th>
+              <th scope="col">Bestellungen</th>
+              <th scope="col">Einheiten insgesamt</th>
+              <th scope="col">Verkäufe</th>
+              <th scope="col">ACOS</th>
+              <th scope="col">Platzierungstyp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for entry in data %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>{{entry.Record_ID}}</td>
+              <td>{{entry.sheet_name}}</td>
+              <td>{{entry.Datensatztyp}}</td>
+              <td>{{entry.Kampagnen_ID}}</td>
+              <td>{{entry.Kampagne_Kampagnename}}</td>
+              <td>{{entry.Kampagnentyp}}</td>
+              <td>{{entry.Anzeigenformat}}</td>
+              <td>{{entry.Budget}}</td>
+              <td>{{entry.Portfolio_ID}}</td>
+              <td>{{entry.Kampagnenstartdatum}}</td>
+              <td>{{entry.Kampagnenenddatum}}</td>
+              <td>{{entry.Budget_Typ}}</td>
+              <td>{{entry.URL_der_Landing_Page}}</td>
+              <td>{{entry.Landing_Page_ASINs}}</td>
+              <td>{{entry.Markenname}}</td>
+              <td>{{entry.Markenidentitäts_ID}}</td>
+              <td>{{entry.Markenlogo_Asset_ID}}</td>
+              <td>{{entry.Headline}}</td>
+              <td>{{entry.Anzeigendesign_ASINs}}</td>
+              <td>{{entry.Medien_ID}}</td>
+              <td>{{entry.Automatisierte_Gebote}}</td>
+              <td>{{entry.Gebotsfaktor}}</td>
+              <td>{{entry.Anzeigengruppe}}</td>
+              <td>{{entry.Max_Gebot}}</td>
+              <td>{{entry.Keyword}}</td>
+              <td>{{entry.Übereinstimmungstyp}}</td>
+              <td>{{entry.Kampagnenstatus}}</td>
+              <td>{{entry.Bereitstellungsstatus}}</td>
+              <td>{{entry.Status_der_Anzeigengruppe}}</td>
+              <td>{{entry.Status}}</td>
+              <td>{{entry.Impressions}}</td>
+              <td>{{entry.Klicks}}</td>
+              <td>{{entry.Ausgaben}}</td>
+              <td>{{entry.Bestellungen}}</td>
+              <td>{{entry.Einheiten_insgesamt}}</td>
+              <td>{{entry.Verkäufe}}</td>
+              <td>{{entry.ACOS}}</td>
+              <td>{{entry.Platzierungstyp}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+    </table>
+</div>
+{% endblock %}
+{% block scripts %} 
+<!-- DataTables  & Plugins -->
+<script src="{% static 'adminlte/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
+
+<script src="{% static 'adminlte/plugins/jszip/jszip.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+<!-- Page specific script -->
+<script>
+    $(function () {
+      $("#client_data_table").DataTable({
+      //   "responsive": true,
+        // dom: 'Bfrtip',
+        "buttons": ["copy", "csv", "excel", "pdf", "print"],
+      }).buttons().container().appendTo('#client_data_table_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+  </script>
+{% endblock %}

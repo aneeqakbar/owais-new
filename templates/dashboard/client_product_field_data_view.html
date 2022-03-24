@@ -1,0 +1,347 @@
+{% extends 'dashboard/layout.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block head %}
+<style>
+    #client_data_table {
+      border-radius: 20px !important;
+      overflow: hidden;
+    }
+    #client_data_table th {
+      cursor:pointer;
+      min-width: 100px;
+    }
+    #client_data_table thead tr {
+      background-color: #fff;
+      padding: 2rem !important;
+    }
+    #client_data_table thead tr th {
+      border-top: none;
+      background-color: #fff;
+      vertical-align: middle;
+    }
+    #client_data_table tbody tr {
+      background-color: #fff;
+    }
+    
+    #client_data_table tbody tr td {
+      padding: 1rem !important;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      vertical-align: middle;
+    }
+</style>
+{% endblock %}
+
+{% block heading %} 
+Client {{field}} Data
+{% endblock %}
+
+
+{% block content %}
+{% comment %} <p class="text-danger">
+  <small>
+    Only 500 data entries will be shown because its a test server.
+  </small>
+</p> {% endcomment %}
+
+{% include "dashboard/template-parts/client_product_data_header.html" %}
+
+<div class="table-responsive">
+    <table id="client_data_table" class="shadow-sm display compact hover nowrap table table-bordered table-striped my-4" style="width: 100%;">
+        <thead>
+            <tr>
+              <th scope="col">
+                #
+                <span class="icon"></span>
+              </th>
+              <th class="text-no-overflow">
+                Name
+                <span class="icon"></span>
+              </th>
+              <th class="text-no-overflow">
+                24h %
+                <span class="icon"></span>
+              </th>
+              <th class="text-no-overflow">
+                7d %
+                <span class="icon"></span>
+              </th>
+              <th class="text-no-overflow">
+                Yearly %
+                <span class="icon"></span>
+              </th>
+              <th class="text-no-overflow" style="min-width: 150px; width: 300px;">
+                Last 7 Days
+                <span class="icon"></span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for entry in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>
+                  <span>
+                    {{field}}
+                  </span>
+                  <br>
+                  <small class="text-muted">
+                    {{entry.get_unique_id}}
+                  </small>
+                </td>
+                {% with entry|get_field_analytics:field as value %}
+                  <td>
+                      {% if value.daily|compareInt:"0" %}
+                          <span class="text-success">
+                          <i class="fas fa-chevron-up"></i>
+                      {% else %}
+                          <span class="text-danger">
+                          <i class="fas fa-chevron-down"></i>
+                      {% endif %}
+                          {{value.daily|floatformat:2}}%
+                          </span>
+                  </td>
+                  <td>
+                      {% if value.weekly|compareInt:"0" %}
+                          <span class="text-success">
+                          <i class="fas fa-chevron-up"></i>
+                      {% else %}
+                          <span class="text-danger">
+                          <i class="fas fa-chevron-down"></i>
+                      {% endif %}
+                          {{value.weekly|floatformat:2}}%
+                          </span>
+                  </td>
+                  <td>
+                      {% if value.yearly|compareInt:"0" %}
+                          <span class="text-success">
+                          <i class="fas fa-chevron-up"></i>
+                      {% else %}
+                          <span class="text-danger">
+                          <i class="fas fa-chevron-down"></i>
+                      {% endif %}
+                          {{value.yearly|floatformat:2}}%
+                          </span>
+                  </td>
+                {% endwith %}
+                <td class="d-flex">
+                  <a href="{% url 'dashboard:ViewDataChartAnalytics' data_id=entry.id data_type=entry.type field=field %}" class="w-100">
+                    <canvas id="myChart-{{entry.id}}" height="100px" style="max-width: 100%;"></canvas>
+                  </a>
+                </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+    </table>
+
+    <div class="row">
+      <div class="col-12">
+        {% if data.has_other_pages %}
+          <ul class="pagination justify-content-center">
+            {% if data.has_previous %}
+              <li>
+                <a href="?page=1" class="page-link">&laquo; first</a>
+              </li>
+              <li>
+                <a href="?page={{ data.previous_page_number }}" class="page-link">&laquo;</a>
+              </li>
+            {% endif %}
+    
+            {% for i in "01234"|make_list %}
+              {% with data.paginator.page_range|at_index:data.number|sum_number:i as j %}
+                {% if j %}
+                  {% if data.number == j %}
+                  <li>
+                    <a href="?page={{ j }}" class="page-link bg-primary">{{ j }}</a>
+                  </li>
+                  {% else %}
+                  <li>
+                    <a href="?page={{ j }}" class="page-link">{{ j }}</a>
+                  </li>
+                  {% endif %}
+                {% endif %}
+              {% endwith %}
+            {% endfor %}
+  
+            {% if data.has_next %}
+              <li>
+                <a href="?page={{ data.next_page_number }}" class="page-link">&raquo;</a>
+              </li>
+              <li>
+                <a href="?page={{ data.paginator.num_pages }}" class="page-link">last &raquo;</a>
+              </li>
+            {% endif %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %} 
+<!-- DataTables  & Plugins -->
+<script src="{% static 'adminlte/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
+
+<script src="{% static 'adminlte/plugins/jszip/jszip.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Page specific script -->
+{% comment %} <script>
+  $(function () {
+    $("#client_data_table").DataTable({
+    //   "responsive": true,
+      // dom: 'Bfrtip',
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+    }).buttons().container().appendTo('#client_data_table_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+    });
+  });
+</script> {% endcomment %}
+
+<script>
+  $(function () {
+    const clientDataTable = document.getElementById("client_data_table");
+    let ths = clientDataTable.querySelectorAll("th");
+    ths.forEach((th)=>{
+      th.addEventListener("click", (e)=>{
+        ths.forEach((th)=>{
+          let iconCont = th.querySelector(".icon");
+          iconCont.innerHTML = ``;
+        })
+        let iconCont = th.querySelector(".icon");
+        if (th.classList.contains("sorting_desc")) {
+          iconCont.innerHTML = `<i class="fas fa-caret-up"></i>`;
+        } else if (th.classList.contains("sorting_asc")) {
+          iconCont.innerHTML = `<i class="fas fa-caret-down"></i>`;
+        }
+      })
+    })
+  });
+
+  let analyticSelectInput = document.getElementById("analytic-field-select");
+  analyticSelectInput.addEventListener("change", ()=>{
+    let url = `{% url 'dashboard:ViewClientData' client_id=client.id data_type=data_type %}${analyticSelectInput.value}/`
+    if (analyticSelectInput.value === "-"){
+      url = `{% url 'dashboard:ViewClientData' client_id=client.id data_type=data_type %}`
+    }
+    window.location.href = url;
+  })
+</script>
+
+<script>
+  function getGradient(ctx, chartArea) {
+      const chartWidth = chartArea.right - chartArea.left;
+      const chartHeight = chartArea.bottom - chartArea.top;
+      if (!gradient || width !== chartWidth || height !== chartHeight) {
+          // Create the gradient because this is either the first render
+          // or the size of the chart has changed
+          width = chartWidth;
+          height = chartHeight;
+          gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+          gradient.addColorStop(0, "red");
+          gradient.addColorStop(0.40, "red");
+          gradient.addColorStop(0.40, "#16c784");
+          gradient.addColorStop(1, "#16c784");
+      }
+      return gradient;
+  }
+
+  let width, height, gradient;
+  let data = {};
+  let ctx ;
+  let myChart ;
+  let config ;
+  {% for entry in data %}
+    {% with entry|get_field_cart_data:field as chart_data %}
+
+      data = {
+        labels: {{chart_data.labels|safe}},
+        datasets: [{
+          label: '{{field}}',
+          backgroundColor: "#fff",
+          borderColor: function(context) {
+              const chart = context.chart;
+              const {ctx, chartArea} = chart;
+
+              if (!chartArea) {
+                // This case happens on initial chart load
+                return;
+              }
+              return getGradient(ctx, chartArea);
+          },
+          fill: false,
+          data: {{chart_data.data|safe}},
+        }]
+      };
+
+      config = {
+        type: 'line',
+        data: data,
+        options: {
+            responsive: false,
+            layout: {
+              padding: 0,
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    display: false,
+                },
+                title: {
+                    display: false,
+                },
+                tooltip: {
+                  enabled: false,
+                },
+            },
+            scales: {
+                x: {
+                  grid: {
+                    display: false,
+                    drawBorder: false,
+                  },
+                  ticks: {
+                    display: false
+                  }
+                },
+                y: {
+                  grid: {
+                      display: false,
+                      drawBorder: false,
+                  },
+                  ticks: {
+                    display: false
+                  }
+                }
+            },
+            elements: {
+                point: {
+                  radius: "1",
+                  pointStyle: 'circle',
+                  hoverRadius: "1",
+                }
+            }
+        }
+      }
+
+      ctx = document.getElementById('myChart-{{entry.id}}').getContext('2d');
+      myChart = new Chart(ctx, config);
+    {% endwith %}
+  {% endfor %}
+</script>
+{% endblock %}

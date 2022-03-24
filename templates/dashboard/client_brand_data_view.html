@@ -1,0 +1,370 @@
+{% extends 'dashboard/layout.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block head %}
+<style>
+    #client_data_table {
+        font-size: 0.8em;
+    }
+    #client_data_table th {
+      cursor:pointer;
+      min-width: 150px;
+    }
+</style>
+{% endblock %}
+
+{% block heading %} 
+Client Data
+{% endblock %}
+
+
+{% block content %}
+<p class="text-danger">
+  <small>
+    Only 500 data entries will be shown because its a test server.
+  </small>
+</p>
+
+<div class="row my-3">
+  <div class="col-12 text-right">
+    {% if data_type == "product" %}
+      <a href="{% url 'dashboard:ViewClientData' client_id=client.id data_type='brand' %}" class="btn btn-warning">
+        View Brand Data
+      </a>
+    {% elif data_type == "brand" %}
+      <a href="{% url 'dashboard:ViewClientData' client_id=client.id data_type='product' %}" class="btn btn-warning">
+        View Product Data
+      </a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="table-responsive">
+    <table id="client_data_table" class="display compact hover nowrap table table-bordered table-striped my-4" style="width: 100%;">
+        <thead>
+            <tr>
+                <th scope="col">
+                  #
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Record ID
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Datensatztyp
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Kampagnen-ID
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Kampagne:Kampagnename
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Kampagnentyp
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Anzeigenformat
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Budget
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Portfolio-ID
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Kampagnenstartdatum
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Kampagnenenddatum
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Budget-Typ
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  URL der Landing Page
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Landing Page-ASINs
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Markenname
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Markenidentitäts-ID
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Markenlogo-Asset-ID
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Headline
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Anzeigendesign ASINs
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Medien-ID
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Automatisierte Gebote
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Gebotsfaktor
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Anzeigengruppe
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Max. Gebot
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Keyword
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Übereinstimmungstyp
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Kampagnenstatus
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Bereitstellungsstatus
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Status der Anzeigengruppe
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Status
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Impressions
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Klicks
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Ausgaben
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Bestellungen
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Einheiten insgesamt
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Verkäufe
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  ACOS
+                  <span class="icon"></span>
+                </th>
+                <th>
+                  Platzierungstyp
+                  <span class="icon"></span>
+                </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for entry in data %}
+            <tr>
+              <td>{{forloop.counter}}</td>
+              <td>{{entry.Record_ID}}</td>
+              <td>{{entry.Datensatztyp}}</td>
+              <td>{{entry.Kampagnen_ID}}</td>
+              <td>{{entry.Kampagne_Kampagnename}}</td>
+              <td>{{entry.Kampagnentyp}}</td>
+              <td>{{entry.Anzeigenformat}}</td>
+              <td>{{entry.Budget}}</td>
+              <td>{{entry.Portfolio_ID}}</td>
+              <td>{{entry.Kampagnenstartdatum}}</td>
+              <td>{{entry.Kampagnenenddatum}}</td>
+              <td>{{entry.Budget_Typ}}</td>
+              <td>{{entry.URL_der_Landing_Page}}</td>
+              <td>{{entry.Landing_Page_ASINs}}</td>
+              <td>{{entry.Markenname}}</td>
+              <td>{{entry.Markenidentitäts_ID}}</td>
+              <td>{{entry.Markenlogo_Asset_ID}}</td>
+              <td>{{entry.Headline}}</td>
+              <td>{{entry.Anzeigendesign_ASINs}}</td>
+              <td>{{entry.Medien_ID}}</td>
+              <td>{{entry.Automatisierte_Gebote}}</td>
+              <td>{{entry.Gebotsfaktor}}</td>
+              <td>{{entry.Anzeigengruppe}}</td>
+              <td>{{entry.Max_Gebot}}</td>
+              <td>{{entry.Keyword}}</td>
+              <td>{{entry.Ubereinstimmungstyp}}</td>
+              <td>{{entry.Kampagnenstatus}}</td>
+              <td>{{entry.Bereitstellungsstatus}}</td>
+              <td>{{entry.Status_der_Anzeigengruppe}}</td>
+              <td>{{entry.Status}}</td>
+              <td>
+                {% if entry.Impressions|compareInt:"0" %}
+                  <span class="text-success">
+                    <i class="fas fa-chevron-up"></i>
+                {% else %}
+                  <span class="text-danger">
+                    <i class="fas fa-chevron-down"></i>
+                {% endif %}
+                    {{entry.Impressions}}
+                  </span>
+              </td>
+              <td>
+                {% if entry.Klicks|compareInt:"0" %}
+                  <span class="text-success">
+                    <i class="fas fa-chevron-up"></i>
+                {% else %}
+                  <span class="text-danger">
+                    <i class="fas fa-chevron-down"></i>
+                {% endif %}
+                    {{entry.Klicks}}
+                  </span>
+              </td>
+              <td>
+                {% if entry.Ausgaben|compareInt:"0" %}
+                  <span class="text-success">
+                    <i class="fas fa-chevron-up"></i>
+                {% else %}
+                  <span class="text-danger">
+                    <i class="fas fa-chevron-down"></i>
+                {% endif %}
+                    {{entry.Ausgaben}}
+                  </span>
+              </td>
+              <td>
+                {% if entry.Bestellungen|compareInt:"0" %}
+                  <span class="text-success">
+                    <i class="fas fa-chevron-up"></i>
+                {% else %}
+                  <span class="text-danger">
+                    <i class="fas fa-chevron-down"></i>
+                {% endif %}
+                    {{entry.Bestellungen}}
+                  </span>
+              </td>
+              <td>
+                {% if entry.Einheiten_insgesamt|compareInt:"0" %}
+                  <span class="text-success">
+                    <i class="fas fa-chevron-up"></i>
+                {% else %}
+                  <span class="text-danger">
+                    <i class="fas fa-chevron-down"></i>
+                {% endif %}
+                    {{entry.Einheiten_insgesamt}}
+                  </span>
+              </td>
+              <td>
+                {% if entry.Verkäufe|compareInt:"0" %}
+                  <span class="text-success">
+                    <i class="fas fa-chevron-up"></i>
+                {% else %}
+                  <span class="text-danger">
+                    <i class="fas fa-chevron-down"></i>
+                {% endif %}
+                    {{entry.Verkäufe}}
+                  </span>
+              </td>
+              <td>
+                {% if entry.ACOS|compareInt:"0" %}
+                  <span class="text-success">
+                    <i class="fas fa-chevron-up"></i>
+                {% else %}
+                  <span class="text-danger">
+                    <i class="fas fa-chevron-down"></i>
+                {% endif %}
+                    {{entry.ACOS}}
+                  </span>
+              </td>
+              <td>{{entry.Platzierungstyp}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block scripts %} 
+<!-- DataTables  & Plugins -->
+<script src="{% static 'adminlte/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
+
+<script src="{% static 'adminlte/plugins/jszip/jszip.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+<!-- Page specific script -->
+<script>
+  $(function () {
+    $("#client_data_table").DataTable({
+    //   "responsive": true,
+      // dom: 'Bfrtip',
+      "buttons": ["copy", "csv", "excel", "pdf", "print"],
+    }).buttons().container().appendTo('#client_data_table_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+
+<script>
+  $(function () {
+    const clientDataTable = document.getElementById("client_data_table");
+    let ths = clientDataTable.querySelectorAll("th");
+    ths.forEach((th)=>{
+      th.addEventListener("click", (e)=>{
+        let iconCont = th.querySelector(".icon");
+        if (th.classList.contains("sorting_desc")) {
+          iconCont.innerHTML = `<i class="fas fa-caret-up"></i>`;
+        } else if (th.classList.contains("sorting_asc")) {
+          iconCont.innerHTML = `<i class="fas fa-caret-down"></i>`;
+        }
+      })
+    })
+  });
+</script>
+{% endblock %}

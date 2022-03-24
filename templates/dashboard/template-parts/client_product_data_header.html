@@ -1,0 +1,31 @@
+
+<div class="row my-3">
+    <div class="form-group">
+        <label for="analytic-field-select">Select Field For Analytics</label>
+        <select class="form-control" id="analytic-field-select">
+        <option value="-">-</option>
+        <option value="Impressions" {% if field == "Impressions" %} selected {% endif %}>Impressions</option>
+        <option value="Clicks" {% if field == "Clicks" %} selected {% endif %}>Clicks</option>
+        <option value="Click_through_Rate" {% if field == "Click_through_Rate" %} selected {% endif %}>Click_through_Rate</option>
+        <option value="Spend" {% if field == "Spend" %} selected {% endif %}>Spend</option>
+        <option value="Sales" {% if field == "Sales" %} selected {% endif %}>Sales</option>
+        <option value="Orders" {% if field == "Orders" %} selected {% endif %}>Orders</option>
+        <option value="Units" {% if field == "Units" %} selected {% endif %}>Units</option>
+        <option value="Conversion_Rate" {% if field == "Conversion_Rate" %} selected {% endif %}>Conversion_Rate</option>
+        <option value="Acos" {% if field == "Acos" %} selected {% endif %}>Acos</option>
+        <option value="CPC" {% if field == "CPC" %} selected {% endif %}>CPC</option>
+        <option value="ROAS" {% if field == "ROAS" %} selected {% endif %}>ROAS</option>
+        </select>
+    </div>
+    <div class="col-12 text-right">
+        {% if data_type == "product" %}
+        {% comment %} <a href="{% url 'dashboard:ViewClientData' client_id=client.id data_type='brand' %}" class="btn btn-warning">
+            View Brand Data
+        </a> {% endcomment %}
+        {% elif data_type == "brand" %}
+        <a href="{% url 'dashboard:ViewClientData' client_id=client.id data_type='product' %}" class="btn btn-warning">
+            View Product Data
+        </a>
+        {% endif %}
+    </div>
+</div>
