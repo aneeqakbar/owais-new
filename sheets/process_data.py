@@ -176,8 +176,8 @@ class ProcessSheetData():
                 data.Match_Type = get_index_or_none(Match_Type, i, None)
                 data.Bidding_Strategy = current_Bidding_Strategy
                 data.Placement = get_index_or_none(Placement, i, None)
-                data.placementProductPage = get_index_or_none(placementProductPage, i, None)
-                data.placementTop = get_index_or_none(placementTop, i, None)
+                data.placementProductPage = placementProductPage
+                data.placementTop = placementTop
                 data.Percentage = get_index_or_none(Percentage, i, None)
                 data.Product_Targeting_Expression = get_index_or_none(Product_Targeting_Expression, i, None)
                 data.Campaign_Name_info_only = get_index_or_none(Campaign_Name_info_only, i, None)
