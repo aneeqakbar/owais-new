@@ -1,6 +1,6 @@
 from random import randint
 import pandas as pd
-from sheets.utils import get_index_or_none, get_percent_or_none
+from sheets.utils import get_index_or_none, get_percent_or_none, str_to_date
 from dashboard.models import AnalyticalValue, DataProduct, DataBrand
 from django.core.paginator import Paginator
 import datetime
@@ -32,53 +32,53 @@ class ProcessSheetData():
             else:
                 return data
 
-    def commit_product_data(self, data):
+    def commit_product_data(self, dataframe):
 
-        Product = data.get("Product", None)
-        Entity = data.get("Entity", None)
-        Operation = data.get("Operation", None)
-        Campaign_Id = data.get("Campaign Id", None)
-        Ad_Group_Id = data.get("Ad Group Id", None)
-        Portfolio_Id = data.get("Portfolio Id", None)
-        Ad_Id = data.get("Ad Id (Read only)", None)
-        Keyword_Id = data.get("Keyword Id (Read only)", None)
-        Product_Targeting_Id = data.get("Product Targeting Id (Read only)", None)
-        Campaign_Name = data.get("Campaign Name", None)
-        Ad_Group_Name = data.get("Ad Group Name", None)
-        Start_Date = data.get("Start Date", None)
-        End_Date = data.get("End Date", None)
-        Targeting_Type = data.get("Targeting Type", None)
-        State = data.get("State", None)
-        Daily_Budget = data.get("Daily Budget", None)
-        SKU = data.get("SKU", None)
-        ASIN = data.get("ASIN", None)
-        Ad_Group_Default_Bid = data.get("Ad Group Default Bid", None)
-        Bid = data.get("Bid", None)
-        Keyword_Text = data.get("Keyword Text", None)
-        Match_Type = data.get("Match Type", None)
-        Bidding_Strategy = data.get("Bidding Strategy", None)
-        Placement = data.get("Placement", None)
-        placementProductPage = data.get("placementProductPage", None)
-        placementTop = data.get("placementTop", None)
-        Percentage = data.get("Percentage", None)
-        Product_Targeting_Expression = data.get("Product Targeting Expression", None)
-        Impressions = data.get("Impressions", None)
-        Clicks = data.get("Clicks", None)
-        Click_through_Rate = data.get("Click-through Rate", None)
-        Spend = data.get("Spend", None)
-        Sales = data.get("Sales", None)
-        Orders = data.get("Orders", None)
-        Units = data.get("Units", None)
-        Conversion_Rate = data.get("Conversion Rate", None)
-        Acos = data.get("Acos", None)
-        CPC = data.get("CPC", None)
-        ROAS = data.get("ROAS", None)
-        Campaign_Name_info_only = data.get("Campaign Name (Informational only)", None)
-        Ad_Group_Name_info_only = data.get("Ad Group Name (Informational only)", None)
-        Campaign_State_info_only = data.get("Campaign State (Informational only)", None)
-        Ad_Group_State_info_only = data.get("Ad Group State (Informational only)", None)
-        Ad_Group_Default_Bid_info_only = data.get("Ad Group Default Bid (Informational only)", None)
-        Resolved_Product_Targeting_Expression_info_only = data.get("Resolved Product Targeting Expression (Informational only)", None)
+        Product = dataframe.get("Product", None)
+        Entity = dataframe.get("Entity", None)
+        Operation = dataframe.get("Operation", None)
+        Campaign_Id = dataframe.get("Campaign Id", None)
+        Ad_Group_Id = dataframe.get("Ad Group Id", None)
+        Portfolio_Id = dataframe.get("Portfolio Id", None)
+        Ad_Id = dataframe.get("Ad Id (Read only)", None)
+        Keyword_Id = dataframe.get("Keyword Id (Read only)", None)
+        Product_Targeting_Id = dataframe.get("Product Targeting Id (Read only)", None)
+        Campaign_Name = dataframe.get("Campaign Name", None)
+        Ad_Group_Name = dataframe.get("Ad Group Name", None)
+        Start_Date = dataframe.get("Start Date", None)
+        End_Date = dataframe.get("End Date", None)
+        Targeting_Type = dataframe.get("Targeting Type", None)
+        State = dataframe.get("State", None)
+        Daily_Budget = dataframe.get("Daily Budget", None)
+        SKU = dataframe.get("SKU", None)
+        ASIN = dataframe.get("ASIN", None)
+        Ad_Group_Default_Bid = dataframe.get("Ad Group Default Bid", None)
+        Bid = dataframe.get("Bid", None)
+        Keyword_Text = dataframe.get("Keyword Text", None)
+        Match_Type = dataframe.get("Match Type", None)
+        Bidding_Strategy = dataframe.get("Bidding Strategy", None)
+        Placement = dataframe.get("Placement", None)
+        placementProductPage = dataframe.get("placementProductPage", None)
+        placementTop = dataframe.get("placementTop", None)
+        Percentage = dataframe.get("Percentage", None)
+        Product_Targeting_Expression = dataframe.get("Product Targeting Expression", None)
+        Impressions = dataframe.get("Impressions", None)
+        Clicks = dataframe.get("Clicks", None)
+        Click_through_Rate = dataframe.get("Click-through Rate", None)
+        Spend = dataframe.get("Spend", None)
+        Sales = dataframe.get("Sales", None)
+        Orders = dataframe.get("Orders", None)
+        Units = dataframe.get("Units", None)
+        Conversion_Rate = dataframe.get("Conversion Rate", None)
+        Acos = dataframe.get("Acos", None)
+        CPC = dataframe.get("CPC", None)
+        ROAS = dataframe.get("ROAS", None)
+        Campaign_Name_info_only = dataframe.get("Campaign Name (Informational only)", None)
+        Ad_Group_Name_info_only = dataframe.get("Ad Group Name (Informational only)", None)
+        Campaign_State_info_only = dataframe.get("Campaign State (Informational only)", None)
+        Ad_Group_State_info_only = dataframe.get("Ad Group State (Informational only)", None)
+        Ad_Group_Default_Bid_info_only = dataframe.get("Ad Group Default Bid (Informational only)", None)
+        Resolved_Product_Targeting_Expression_info_only = dataframe.get("Resolved Product Targeting Expression (Informational only)", None)
 
         data_instances_created = []
         data_instances_exists = []
@@ -101,7 +101,8 @@ class ProcessSheetData():
         current_ASIN = ""
         current_Ad_Group_Default_Bid = ""
         current_Bidding_Strategy = ""
-        for i in range(len(data)):
+        # for i in range(100):
+        for i in range(len(dataframe)):
             if get_index_or_none(Campaign_Id, i, None):
                 current_campaign_id = get_index_or_none(Campaign_Id, i, None)
             if get_index_or_none(Campaign_Name, i, None):
@@ -130,13 +131,15 @@ class ProcessSheetData():
             current_Ad_Id = get_index_or_none(Ad_Id, i, None)
             current_Keyword_Id = get_index_or_none(Keyword_Id, i, None)
             current_Product_Targeting_Id = get_index_or_none(Product_Targeting_Id, i, None)
+            current_Entity = get_index_or_none(Entity, i, None)
 
-            if current_Ad_Id or current_Keyword_Id or current_Product_Targeting_Id:
+            if (current_Ad_Id or current_Keyword_Id or current_Product_Targeting_Id) and current_campaign_id:
 
                 data_created = True
                 try:
                     data = DataProduct.objects.get(
                         client = self.client,
+                        Entity = current_Entity,
                         Campaign_Id = current_campaign_id,
                         Ad_Id = current_Ad_Id,
                         Keyword_Id = current_Keyword_Id,
@@ -163,8 +166,8 @@ class ProcessSheetData():
                 data.Portfolio_Id = get_index_or_none(Portfolio_Id, i, None)
                 data.Campaign_Name = current_Campaign_Name
                 data.Ad_Group_Name = current_Ad_Group_Name
-                data.Start_Date = current_Start_Date
-                data.End_Date = current_End_Date
+                data.Start_Date = str_to_date(current_Start_Date, None)
+                data.End_Date = str_to_date(current_End_Date, None)
                 data.Targeting_Type = current_Targeting_Type
                 data.State = current_State
                 data.Daily_Budget = current_Daily_Budget
@@ -227,7 +230,8 @@ class ProcessSheetData():
             "Resolved_Product_Targeting_Expression_info_only",
         ])
 
-        for i in range(len(data)):
+        # for i in range(100):
+        for i in range(len(dataframe)):
             current_campaign_id = ""
             if get_index_or_none(Campaign_Id, i, None):
                 current_campaign_id = get_index_or_none(Campaign_Id, i, None)
@@ -235,13 +239,14 @@ class ProcessSheetData():
             current_Ad_Id = get_index_or_none(Ad_Id, i, None)
             current_Keyword_Id = get_index_or_none(Keyword_Id, i, None)
             current_Product_Targeting_Id = get_index_or_none(Product_Targeting_Id, i, None)
-
+            current_Entity = get_index_or_none(Entity, i, None)
             # Campaign Name	Ad Group Name	Start Date	End Date	Targeting Type
 
-            if current_Ad_Id or current_Keyword_Id or current_Product_Targeting_Id:
+            if (current_Ad_Id or current_Keyword_Id or current_Product_Targeting_Id) and current_campaign_id:
                 values_created = True
                 data = DataProduct.objects.get(
                     client = self.client,
+                    Entity = current_Entity,
                     Campaign_Id = current_campaign_id,
                     Ad_Id = current_Ad_Id,
                     Keyword_Id = current_Keyword_Id,
@@ -249,27 +254,27 @@ class ProcessSheetData():
                     sheet_name = self.sheet,
                 )
 
-                try:
-                    analytical_value = AnalyticalValue.objects.filter(
-                        type = self.type,
-                        data_product = data,
-                    ).order_by("-created_at").first()
+                # try:
+                #     analytical_value = AnalyticalValue.objects.filter(
+                #         type = self.type,
+                #         data_product = data,
+                #     ).order_by("-created_at").first()
 
-                    delta = datetime.timedelta(days=1)
-                    current_time = datetime.datetime.now()
+                #     delta = datetime.timedelta(days=1)
+                #     current_time = datetime.datetime.now()
 
-                    if not analytical_value:
-                        raise Exception("values does not exists")
-                    if int(current_time.timestamp()) - int(analytical_value.created_at.timestamp()) > int(delta.total_seconds()):
-                        raise Exception("values are of previous day")
-                    values_created = False
-                except:
-                    analytical_value = AnalyticalValue(
-                        type = self.type,
-                        data_product = data,
-                        created_at = datetime.datetime.now()
-                    )
-                    # created_at = datetime.datetime.now()-datetime.timedelta(days=8)
+                #     if not analytical_value:
+                #         raise Exception("values does not exists")
+                #     if int(current_time.timestamp()) - int(analytical_value.created_at.timestamp()) > int(delta.total_seconds()):
+                #         raise Exception("values are of previous day")
+                #     values_created = False
+                # except:
+                analytical_value = AnalyticalValue(
+                    type = self.type,
+                    data_product = data,
+                    created_at = datetime.datetime.now()-datetime.timedelta(days=8)
+                )
+                    # created_at = datetime.datetime.now()
 
                 analytical_value.data_product = data
                 analytical_value.Impressions = get_index_or_none(Impressions, i, None)
@@ -288,7 +293,6 @@ class ProcessSheetData():
                     analytical_values_created.append(analytical_value)
                 else:
                     analytical_values_exists.append(analytical_value)
-            print(analytical_values_created, analytical_values_exists)
 
         AnalyticalValue.objects.bulk_update(analytical_values_exists, fields=[
             "Impressions",

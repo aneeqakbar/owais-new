@@ -18,6 +18,7 @@ class DataProductAdmin(admin.ModelAdmin):
         "Product",
         "Entity",
         "Operation",
+        "Campaign_Id",
         "Ad_Group_Id",
         "Portfolio_Id",
         "Ad_Id",

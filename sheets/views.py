@@ -35,7 +35,7 @@ class UploadClientData(View):
 
         file_process = ProcessSheetData(file_path=file_path, type="P", client=client)
         data = file_process.process_data(commit=False)
-        file_process.commit_product_data(data = data)
+        file_process.commit_product_data(dataframe = data)
         # file_process.commit_brand_data(data = data)
 
         # file_process = ProcessSheetData(file_path=file_path, type="B", client=client)

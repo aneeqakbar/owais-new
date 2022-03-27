@@ -170,8 +170,8 @@ Client Data
             <td>{{entry.Product_Targeting_Id}}</td>
             <td>{{entry.Campaign_Name}}</td>
             <td>{{entry.Ad_Group_Name}}</td>
-            <td>{{entry.Start_Date}}</td>
-            <td>{{entry.End_Date}}</td>
+            <td>{{entry.Start_Date.date}}</td>
+            <td>{{entry.End_Date.date}}</td>
             <td>{{entry.Targeting_Type}}</td>
             <td>{{entry.State}}</td>
             <td>{{entry.Daily_Budget}}</td>
@@ -189,47 +189,46 @@ Client Data
           {% endfor %}
         </tbody>
   </table>
+</div>
+<div class="row my-3">
+  <div class="col-12">
+    {% if data.has_other_pages %}
+      <ul class="pagination justify-content-center">
+        {% if data.has_previous %}
+          <li>
+            <a href="?page=1" class="page-link">&laquo; first</a>
+          </li>
+          <li>
+            <a href="?page={{ data.previous_page_number }}" class="page-link">&laquo;</a>
+          </li>
+        {% endif %}
 
-  <div class="row">
-    <div class="col-12">
-      {% if data.has_other_pages %}
-        <ul class="pagination justify-content-center">
-          {% if data.has_previous %}
-            <li>
-              <a href="?page=1" class="page-link">&laquo; first</a>
-            </li>
-            <li>
-              <a href="?page={{ data.previous_page_number }}" class="page-link">&laquo;</a>
-            </li>
-          {% endif %}
-  
-          {% for i in "01234"|make_list %}
-            {% with data.paginator.page_range|at_index:data.number|sum_number:i as j %}
-              {% if j %}
-                {% if data.number == j %}
-                <li>
-                  <a href="?page={{ j }}" class="page-link bg-primary">{{ j }}</a>
-                </li>
-                {% else %}
-                <li>
-                  <a href="?page={{ j }}" class="page-link">{{ j }}</a>
-                </li>
-                {% endif %}
+        {% for i in "01234"|make_list %}
+          {% with data.paginator.page_range|at_index:data.number|sum_number:i as j %}
+            {% if j %}
+              {% if data.number == j %}
+              <li>
+                <a href="?page={{ j }}" class="page-link bg-primary">{{ j }}</a>
+              </li>
+              {% else %}
+              <li>
+                <a href="?page={{ j }}" class="page-link">{{ j }}</a>
+              </li>
               {% endif %}
-            {% endwith %}
-          {% endfor %}
+            {% endif %}
+          {% endwith %}
+        {% endfor %}
 
-          {% if data.has_next %}
-            <li>
-              <a href="?page={{ data.next_page_number }}" class="page-link">&raquo;</a>
-            </li>
-            <li>
-              <a href="?page={{ data.paginator.num_pages }}" class="page-link">last &raquo;</a>
-            </li>
-          {% endif %}
-        </ul>
-      {% endif %}
-    </div>
+        {% if data.has_next %}
+          <li>
+            <a href="?page={{ data.next_page_number }}" class="page-link">&raquo;</a>
+          </li>
+          <li>
+            <a href="?page={{ data.paginator.num_pages }}" class="page-link">last &raquo;</a>
+          </li>
+        {% endif %}
+      </ul>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

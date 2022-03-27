@@ -17,9 +17,9 @@ class IndexView(View):
         labels = []
         values = []
 
-        for client in request.user.clients.all():
-            labels.append(client.name)
-            values.append(len(client.get_all_data))
+        # for client in request.user.clients.all():
+        #     labels.append(client.name)
+        #     values.append(len(client.get_all_data))
 
         clients_data = {
             "labels": labels,

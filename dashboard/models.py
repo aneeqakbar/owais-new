@@ -69,8 +69,8 @@ class DataProduct(models.Model):
     Product_Targeting_Id = models.TextField(null=True, blank=True)
     Campaign_Name = models.TextField(null=True, blank=True)
     Ad_Group_Name = models.TextField(null=True, blank=True)
-    Start_Date = models.TextField(null=True, blank=True)
-    End_Date = models.TextField(null=True, blank=True)
+    Start_Date = models.DateTimeField(auto_now_add=False, null=True, blank=True)
+    End_Date = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     Targeting_Type = models.TextField(null=True, blank=True)
     State = models.TextField(null=True, blank=True)
     Daily_Budget = models.TextField(null=True, blank=True)
@@ -99,12 +99,10 @@ class DataProduct(models.Model):
 
     @property
     def get_unique_id(self):
-        if self.Ad_Id:
-            return self.Ad_Id
-        elif self.Keyword_Id:
-            return self.Keyword_Id
-        elif self.Product_Targeting_Id:
+        if self.Product_Targeting_Id:
             return self.Product_Targeting_Id
+        elif self.Product_Targeting_Expression:
+            return self.Product_Targeting_Expression
 
     def get_field_analytics(self, field_name=''):
         fields = ['Impressions', 'Clicks', 'Click_through_Rate', 'Spend', 'Sales', 'Orders', 'Units', 'Conversion_Rate', 'Acos', 'CPC', 'ROAS']
