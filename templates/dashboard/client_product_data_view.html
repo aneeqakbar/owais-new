@@ -162,9 +162,9 @@ Client Data
             <td>{{entry.Product}}</td>
             <td>{{entry.Entity}}</td>
             <td>{{entry.Operation}}</td>
-            <td>{{entry.Campaign_Id}}</td>
-            <td>{{entry.Ad_Group_Id}}</td>
-            <td>{{entry.Portfolio_Id}}</td>
+            <td>{{entry.Campaign_Id|int_or_value}}</td>
+            <td>{{entry.Ad_Group_Id|int_or_value}}</td>
+            <td>{{entry.Portfolio_Id|int_or_value}}</td>
             <td>{{entry.Ad_Id}}</td>
             <td>{{entry.Keyword_Id}}</td>
             <td>{{entry.Product_Targeting_Id}}</td>

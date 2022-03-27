@@ -45,3 +45,13 @@ def get_field_cart_data(data, field):
     return data.get_chart_data(field_name=field, days=7)
 
 register.filter('get_field_cart_data', get_field_cart_data)
+
+def int_or_value(value):
+    try:
+        return int(value)
+    except ValueError:
+        return str(value).split(".")[0]
+    except:
+        return value
+
+register.filter('int_or_value', int_or_value)
