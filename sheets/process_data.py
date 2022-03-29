@@ -1,4 +1,5 @@
 from random import randint
+import time
 import pandas as pd
 from sheets.utils import get_index_or_none, get_percent_or_none, str_to_date
 from dashboard.models import AnalyticalValue, DataProduct, DataBrand
@@ -86,8 +87,6 @@ class ProcessSheetData():
         analytical_values_created = []
         analytical_values_exists = []
 
-        placementProductPage = get_index_or_none(Percentage, 1, None)
-        placementTop = get_index_or_none(Percentage, 2, None)
 
         current_campaign_id = ""
         current_Campaign_Name = ""
@@ -101,8 +100,16 @@ class ProcessSheetData():
         current_ASIN = ""
         current_Ad_Group_Default_Bid = ""
         current_Bidding_Strategy = ""
+        current_placementProductPage = ""
+        current_placementTop = ""
         # for i in range(100):
         for i in range(len(dataframe)):
+            placementProductPage = str(get_index_or_none(Percentage, i, ""))
+            placementTop = str(get_index_or_none(Percentage, i+1, ""))
+            if len(placementProductPage) > 0 and len(placementTop) > 0:
+                current_placementProductPage = placementProductPage
+                current_placementTop = placementTop
+
             _value = get_index_or_none(Campaign_Id, i, None)
             if _value:
                 current_campaign_id = _value
@@ -186,13 +193,13 @@ class ProcessSheetData():
                 data.SKU = current_SKU
                 data.ASIN = current_ASIN
                 data.Ad_Group_Default_Bid = current_Ad_Group_Default_Bid
-                data.Bid = get_percent_or_none(placementProductPage, get_index_or_none(Bid, i, None), None)
+                data.Bid = get_percent_or_none(current_placementProductPage, get_index_or_none(Bid, i, None), None)
                 data.Keyword_Text = get_index_or_none(Keyword_Text, i, None)
                 data.Match_Type = get_index_or_none(Match_Type, i, None)
                 data.Bidding_Strategy = current_Bidding_Strategy
                 data.Placement = get_index_or_none(Placement, i, None)
-                data.placementProductPage = placementProductPage
-                data.placementTop = placementTop
+                data.placementProductPage = current_placementProductPage
+                data.placementTop = current_placementTop
                 data.Percentage = get_index_or_none(Percentage, i, None)
                 data.Product_Targeting_Expression = get_index_or_none(Product_Targeting_Expression, i, None)
                 data.Campaign_Name_info_only = get_index_or_none(Campaign_Name_info_only, i, None)
@@ -206,7 +213,7 @@ class ProcessSheetData():
                     data_instances_created.append(data)
                 else:
                     data_instances_exists.append(data)
-                data_instances[i] = data
+                # data_instances[i] = data
                 print(f"data #{i}")
 
         DataProduct.objects.bulk_create(data_instances_created)
@@ -243,7 +250,6 @@ class ProcessSheetData():
             "Ad_Group_Default_Bid_info_only",
             "Resolved_Product_Targeting_Expression_info_only",
         ])
-
         # for i in range(len(dataframe)):
         delta_in_secs = datetime.timedelta(days=1).total_seconds()
         current_timestamp = int(datetime.datetime.now().timestamp())
@@ -262,16 +268,16 @@ class ProcessSheetData():
 
             if (current_Ad_Id or current_Keyword_Id or current_Product_Targeting_Id) and current_campaign_id:
                 values_created = True
-                # data = DataProduct.objects.get(
-                #     client = self.client,
-                #     Entity = current_Entity,
-                #     Campaign_Id = current_campaign_id,
-                #     Ad_Id = current_Ad_Id,
-                #     Keyword_Id = current_Keyword_Id,
-                #     Product_Targeting_Id = current_Product_Targeting_Id,
-                #     sheet_name = self.sheet,
-                # )
-                data = data_instances[i]
+                data = DataProduct.objects.get(
+                    client = self.client,
+                    Entity = current_Entity,
+                    Campaign_Id = current_campaign_id,
+                    Ad_Id = current_Ad_Id,
+                    Keyword_Id = current_Keyword_Id,
+                    Product_Targeting_Id = current_Product_Targeting_Id,
+                    sheet_name = self.sheet,
+                )
+                # data = data_instances[i]
 
                 try:
                     analytical_value = AnalyticalValue.objects.filter(

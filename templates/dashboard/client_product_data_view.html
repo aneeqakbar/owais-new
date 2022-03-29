@@ -24,6 +24,9 @@
     border-bottom: 1px solid #ccc;
     vertical-align: middle;
   }
+  .page-link.disabled{
+    opacity: 0.8;
+  }
 </style>
 {% endblock %}
 
@@ -165,9 +168,9 @@ Client Data
             <td>{{entry.Campaign_Id|int_or_value}}</td>
             <td>{{entry.Ad_Group_Id|int_or_value}}</td>
             <td>{{entry.Portfolio_Id|int_or_value}}</td>
-            <td>{{entry.Ad_Id}}</td>
-            <td>{{entry.Keyword_Id}}</td>
-            <td>{{entry.Product_Targeting_Id}}</td>
+            <td>{{entry.Ad_Id|int_or_value}}</td>
+            <td>{{entry.Keyword_Id|int_or_value}}</td>
+            <td>{{entry.Product_Targeting_Id|int_or_value}}</td>
             <td>{{entry.Campaign_Name}}</td>
             <td>{{entry.Ad_Group_Name}}</td>
             <td>{{entry.Start_Date.date}}</td>
@@ -201,23 +204,18 @@ Client Data
           <li>
             <a href="?page={{ data.previous_page_number }}" class="page-link">&laquo;</a>
           </li>
+        {% else %}
+          <li>
+            <button class="page-link disabled" disabled>&laquo; first</button>
+          </li>
+          <li>
+            <button class="page-link disabled" disabled>&laquo;</button>
+          </li>
         {% endif %}
 
-        {% for i in "01234"|make_list %}
-          {% with data.paginator.page_range|at_index:data.number|sum_number:i as j %}
-            {% if j %}
-              {% if data.number == j %}
-              <li>
-                <a href="?page={{ j }}" class="page-link bg-primary">{{ j }}</a>
-              </li>
-              {% else %}
-              <li>
-                <a href="?page={{ j }}" class="page-link">{{ j }}</a>
-              </li>
-              {% endif %}
-            {% endif %}
-          {% endwith %}
-        {% endfor %}
+        <li>
+          <a class="page-link bg-primary">{{ data.number }}</a>
+        </li>
 
         {% if data.has_next %}
           <li>
@@ -225,6 +223,13 @@ Client Data
           </li>
           <li>
             <a href="?page={{ data.paginator.num_pages }}" class="page-link">last &raquo;</a>
+          </li>
+        {% else %}
+          <li>
+            <button class="page-link disabled" disabled>&raquo;</button>
+          </li>
+          <li>
+            <button class="page-link disabled" disabled>&raquo; last</button>
           </li>
         {% endif %}
       </ul>
@@ -276,7 +281,7 @@ Client Data
   $(function () {
     const clientDataTable = document.getElementById("client_data_table");
     let ths = clientDataTable.querySelectorAll("th");
-    ths.forEach((th)=>{
+    ths.forEach((th, i)=>{
       th.addEventListener("click", (e)=>{
         ths.forEach((th)=>{
           let iconCont = th.querySelector(".icon");
@@ -287,6 +292,11 @@ Client Data
           iconCont.innerHTML = `<i class="fas fa-caret-up"></i>`;
         } else if (th.classList.contains("sorting_asc")) {
           iconCont.innerHTML = `<i class="fas fa-caret-down"></i>`;
+        }
+        if (window.location.href.includes(`?o=${i}`)){
+          window.location.href = `${window.location.href.split("?o")[0]}?o=-${i}`;
+        } else {
+          window.location.href = `${window.location.href.split("?o")[0]}?o=${i}`;
         }
       })
     })

@@ -52,23 +52,23 @@ Client {{field}} Data
     <table id="client_data_table" class="shadow-sm display compact hover nowrap table table-bordered table-striped my-4" style="width: 100%;">
         <thead>
             <tr>
-              <th scope="col">
+              <th scope="col" onclick="sortTable(0)">
                 #
                 <span class="icon"></span>
               </th>
-              <th class="text-no-overflow">
+              <th class="text-no-overflow" onclick="sortTable(1)">
                 Name
                 <span class="icon"></span>
               </th>
-              <th class="text-no-overflow">
+              <th class="text-no-overflow" onclick="sortTable(2)">
                 24h %
                 <span class="icon"></span>
               </th>
-              <th class="text-no-overflow">
+              <th class="text-no-overflow" onclick="sortTable(3)">
                 7d %
                 <span class="icon"></span>
               </th>
-              <th class="text-no-overflow">
+              <th class="text-no-overflow" onclick="sortTable(4)">
                 Yearly %
                 <span class="icon"></span>
               </th>
@@ -88,7 +88,7 @@ Client {{field}} Data
                   </span>
                   <br>
                   <small class="text-muted">
-                    {{entry.get_unique_id}}
+                    {{entry.get_unique_id|int_or_value}}
                   </small>
                 </td>
                 {% with entry|get_field_analytics:field as value %}
@@ -139,42 +139,44 @@ Client {{field}} Data
     <div class="row">
       <div class="col-12">
         {% if data.has_other_pages %}
-          <ul class="pagination justify-content-center">
-            {% if data.has_previous %}
-              <li>
-                <a href="?page=1" class="page-link">&laquo; first</a>
-              </li>
-              <li>
-                <a href="?page={{ data.previous_page_number }}" class="page-link">&laquo;</a>
-              </li>
-            {% endif %}
-    
-            {% for i in "01234"|make_list %}
-              {% with data.paginator.page_range|at_index:data.number|sum_number:i as j %}
-                {% if j %}
-                  {% if data.number == j %}
-                  <li>
-                    <a href="?page={{ j }}" class="page-link bg-primary">{{ j }}</a>
-                  </li>
-                  {% else %}
-                  <li>
-                    <a href="?page={{ j }}" class="page-link">{{ j }}</a>
-                  </li>
-                  {% endif %}
-                {% endif %}
-              {% endwith %}
-            {% endfor %}
+        <ul class="pagination justify-content-center">
+          {% if data.has_previous %}
+            <li>
+              <a href="?page=1" class="page-link">&laquo; first</a>
+            </li>
+            <li>
+              <a href="?page={{ data.previous_page_number }}" class="page-link">&laquo;</a>
+            </li>
+          {% else %}
+            <li>
+              <button class="page-link disabled" disabled>&laquo; first</button>
+            </li>
+            <li>
+              <button class="page-link disabled" disabled>&laquo;</button>
+            </li>
+          {% endif %}
   
-            {% if data.has_next %}
-              <li>
-                <a href="?page={{ data.next_page_number }}" class="page-link">&raquo;</a>
-              </li>
-              <li>
-                <a href="?page={{ data.paginator.num_pages }}" class="page-link">last &raquo;</a>
-              </li>
-            {% endif %}
-          </ul>
-        {% endif %}
+          <li>
+            <a class="page-link bg-primary">{{ data.number }}</a>
+          </li>
+  
+          {% if data.has_next %}
+            <li>
+              <a href="?page={{ data.next_page_number }}" class="page-link">&raquo;</a>
+            </li>
+            <li>
+              <a href="?page={{ data.paginator.num_pages }}" class="page-link">last &raquo;</a>
+            </li>
+          {% else %}
+            <li>
+              <button class="page-link disabled" disabled>&raquo;</button>
+            </li>
+            <li>
+              <button class="page-link disabled" disabled>&raquo; last</button>
+            </li>
+          {% endif %}
+        </ul>
+      {% endif %}
       </div>
     </div>
 </div>
@@ -214,24 +216,60 @@ Client {{field}} Data
 </script> {% endcomment %}
 
 <script>
-  $(function () {
-    const clientDataTable = document.getElementById("client_data_table");
-    let ths = clientDataTable.querySelectorAll("th");
-    ths.forEach((th)=>{
-      th.addEventListener("click", (e)=>{
-        ths.forEach((th)=>{
-          let iconCont = th.querySelector(".icon");
-          iconCont.innerHTML = ``;
-        })
-        let iconCont = th.querySelector(".icon");
-        if (th.classList.contains("sorting_desc")) {
-          iconCont.innerHTML = `<i class="fas fa-caret-up"></i>`;
-        } else if (th.classList.contains("sorting_asc")) {
-          iconCont.innerHTML = `<i class="fas fa-caret-down"></i>`;
+  function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("client_data_table");
+    switching = true;
+    // Set the sorting direction to ascending:
+    dir = "asc";
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+      // Start by saying: no switching is done:
+      switching = false;
+      rows = table.rows;
+      /* Loop through all table rows (except the
+      first, which contains table headers): */
+      for (i = 1; i < (rows.length - 1); i++) {
+        // Start by saying there should be no switching:
+        shouldSwitch = false;
+        /* Get the two elements you want to compare,
+        one from current row and one from the next: */
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+        /* Check if the two rows should switch place,
+        based on the direction, asc or desc: */
+        if (dir == "asc") {
+          if (Number(x.innerText.toLowerCase()) > Number(y.innerText.toLowerCase())) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        } else if (dir == "desc") {
+          if (Number(x.innerText.toLowerCase()) < Number(y.innerText.toLowerCase())) {
+            // If so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
         }
-      })
-    })
-  });
+      }
+      if (shouldSwitch) {
+        /* If a switch has been marked, make the switch
+        and mark that a switch has been done: */
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        // Each time a switch is done, increase this count by 1:
+        switchcount ++;
+      } else {
+        /* If no switching has been done AND the direction is "asc",
+        set the direction to "desc" and run the while loop again. */
+        if (switchcount == 0 && dir == "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+  }
 
   let analyticSelectInput = document.getElementById("analytic-field-select");
   analyticSelectInput.addEventListener("change", ()=>{

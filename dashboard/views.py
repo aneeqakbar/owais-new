@@ -33,6 +33,38 @@ class IndexView(View):
 
 class ViewClientData(View):
     def get(self, request, client_id, data_type):
+        fields = [
+            "id",
+            "Product",
+            "Entity",
+            "Operation",
+            "Campaign_Id",
+            "Ad_Group_Id",
+            "Portfolio_Id",
+            "Ad_Id",
+            "Keyword_Id",
+            "Product_Targeting_Id",
+            "Campaign_Name",
+            "Ad_Group_Name",
+            "Start_Date",
+            "End_Date",
+            "Targeting_Type",
+            "State",
+            "Daily_Budget",
+            "SKU",
+            "ASIN",
+            "Ad_Group_Default_Bid",
+            "Bid",
+            "Keyword_Text",
+            "Match_Type",
+            "Bidding_Strategy",
+            "placementProductPage",
+            "placementTop",
+            "Product_Targeting_Expression",
+        ]
+
+        order_filter = request.GET.get("o", None)
+        
         page = request.GET.get("page", 1)
         template_name = 'dashboard/client_data_view.html'
         client = Client.objects.get(id = client_id)
@@ -47,6 +79,12 @@ class ViewClientData(View):
             data = client.data_brands.all().order_by("-id")
         else:
             raise Http404()
+
+        if order_filter:
+            if str(order_filter).startswith("-"):
+                data = data.order_by(f"{fields[int(order_filter)]}")
+            else:
+                data = data.order_by(f"-{fields[int(order_filter)]}")
 
         paginator = Paginator(data, 20)
         try:
