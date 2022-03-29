@@ -41,10 +41,10 @@ class ViewClientData(View):
 
         if data_type == "product":
             template_name = 'dashboard/client_product_data_view.html'
-            data = client.data_products.all()
+            data = client.data_products.all().order_by("-id")
         elif data_type == "brand":
             template_name = 'dashboard/client_brand_data_view.html'
-            data = client.data_brands.all()
+            data = client.data_brands.all().order_by("-id")
         else:
             raise Http404()
 
@@ -71,10 +71,10 @@ class ViewClientDataAnalytics(View):
         client = Client.objects.get(id = client_id)
         if data_type == "product":
             template_name = 'dashboard/client_product_field_data_view.html'
-            data = client.data_products.all()
+            data = client.data_products.all().order_by("-id")
         elif data_type == "brand":
             template_name = 'dashboard/client_brand_data_view.html'
-            data = client.data_brands.all()
+            data = client.data_brands.all().order_by("-id")
         else:
             raise Http404()
 

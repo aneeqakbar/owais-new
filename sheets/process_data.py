@@ -82,13 +82,13 @@ class ProcessSheetData():
 
         data_instances_created = []
         data_instances_exists = []
+        data_instances = [None for i in range(len(dataframe))]
         analytical_values_created = []
         analytical_values_exists = []
 
         placementProductPage = get_index_or_none(Percentage, 1, None)
         placementTop = get_index_or_none(Percentage, 2, None)
 
-        # for i in range(len(data)):
         current_campaign_id = ""
         current_Campaign_Name = ""
         current_Ad_Group_Name = ""
@@ -103,30 +103,42 @@ class ProcessSheetData():
         current_Bidding_Strategy = ""
         # for i in range(100):
         for i in range(len(dataframe)):
-            if get_index_or_none(Campaign_Id, i, None):
-                current_campaign_id = get_index_or_none(Campaign_Id, i, None)
-            if get_index_or_none(Campaign_Name, i, None):
-                current_Campaign_Name = get_index_or_none(Campaign_Name, i, None)
-            if get_index_or_none(Ad_Group_Name, i, None):
-                current_Ad_Group_Name = get_index_or_none(Ad_Group_Name, i, None)
-            if get_index_or_none(Start_Date, i, None):
-                current_Start_Date = get_index_or_none(Start_Date, i, None)
-            if get_index_or_none(End_Date, i, None):
-                current_End_Date = get_index_or_none(End_Date, i, None)
-            if get_index_or_none(Targeting_Type, i, None):
-                current_Targeting_Type = get_index_or_none(Targeting_Type, i, None)
-            if get_index_or_none(State, i, None):
-                current_State = get_index_or_none(State, i, None)
-            if get_index_or_none(Daily_Budget, i, None):
-                current_Daily_Budget = get_index_or_none(Daily_Budget, i, None)
-            if get_index_or_none(SKU, i, None):
-                current_SKU = get_index_or_none(SKU, i, None)
-            if get_index_or_none(ASIN, i, None):
-                current_ASIN = get_index_or_none(ASIN, i, None)
-            if get_index_or_none(Ad_Group_Default_Bid, i, None):
-                current_Ad_Group_Default_Bid = get_index_or_none(Ad_Group_Default_Bid, i, None)
-            if get_index_or_none(Bidding_Strategy, i, None):
-                current_Bidding_Strategy = get_index_or_none(Bidding_Strategy, i, None)
+            _value = get_index_or_none(Campaign_Id, i, None)
+            if _value:
+                current_campaign_id = _value
+            _value = get_index_or_none(Campaign_Name, i, None)
+            if _value:
+                current_Campaign_Name = _value
+            _value = get_index_or_none(Ad_Group_Name, i, None)
+            if _value:
+                current_Ad_Group_Name = _value
+            _value = get_index_or_none(Start_Date, i, None)
+            if _value:
+                current_Start_Date = _value
+            _value = get_index_or_none(End_Date, i, None)
+            if _value:
+                current_End_Date = _value
+            _value = get_index_or_none(Targeting_Type, i, None)
+            if _value:
+                current_Targeting_Type = _value
+            _value = get_index_or_none(State, i, None)
+            if _value:
+                current_State = _value
+            _value = get_index_or_none(Daily_Budget, i, None)
+            if _value:
+                current_Daily_Budget = _value
+            _value = get_index_or_none(SKU, i, None)
+            if _value:
+                current_SKU = _value
+            _value = get_index_or_none(ASIN, i, None)
+            if _value:
+                current_ASIN = _value
+            _value = get_index_or_none(Ad_Group_Default_Bid, i, None)
+            if _value:
+                current_Ad_Group_Default_Bid = _value
+            _value = get_index_or_none(Bidding_Strategy, i, None)
+            if _value:
+                current_Bidding_Strategy = _value
 
             current_Ad_Id = get_index_or_none(Ad_Id, i, None)
             current_Keyword_Id = get_index_or_none(Keyword_Id, i, None)
@@ -194,6 +206,8 @@ class ProcessSheetData():
                     data_instances_created.append(data)
                 else:
                     data_instances_exists.append(data)
+                data_instances[i] = data
+                print(f"data #{i}")
 
         DataProduct.objects.bulk_create(data_instances_created)
         DataProduct.objects.bulk_update(data_instances_exists, fields=[
@@ -230,11 +244,15 @@ class ProcessSheetData():
             "Resolved_Product_Targeting_Expression_info_only",
         ])
 
-        # for i in range(100):
+        # for i in range(len(dataframe)):
+        delta_in_secs = datetime.timedelta(days=1).total_seconds()
+        current_timestamp = int(datetime.datetime.now().timestamp())
+        current_time = datetime.datetime.now()
         for i in range(len(dataframe)):
             current_campaign_id = ""
-            if get_index_or_none(Campaign_Id, i, None):
-                current_campaign_id = get_index_or_none(Campaign_Id, i, None)
+            _value = get_index_or_none(Campaign_Id, i, None)
+            if _value:
+                current_campaign_id = _value
 
             current_Ad_Id = get_index_or_none(Ad_Id, i, None)
             current_Keyword_Id = get_index_or_none(Keyword_Id, i, None)
@@ -244,37 +262,35 @@ class ProcessSheetData():
 
             if (current_Ad_Id or current_Keyword_Id or current_Product_Targeting_Id) and current_campaign_id:
                 values_created = True
-                data = DataProduct.objects.get(
-                    client = self.client,
-                    Entity = current_Entity,
-                    Campaign_Id = current_campaign_id,
-                    Ad_Id = current_Ad_Id,
-                    Keyword_Id = current_Keyword_Id,
-                    Product_Targeting_Id = current_Product_Targeting_Id,
-                    sheet_name = self.sheet,
-                )
+                # data = DataProduct.objects.get(
+                #     client = self.client,
+                #     Entity = current_Entity,
+                #     Campaign_Id = current_campaign_id,
+                #     Ad_Id = current_Ad_Id,
+                #     Keyword_Id = current_Keyword_Id,
+                #     Product_Targeting_Id = current_Product_Targeting_Id,
+                #     sheet_name = self.sheet,
+                # )
+                data = data_instances[i]
 
-                # try:
-                #     analytical_value = AnalyticalValue.objects.filter(
-                #         type = self.type,
-                #         data_product = data,
-                #     ).order_by("-created_at").first()
+                try:
+                    analytical_value = AnalyticalValue.objects.filter(
+                        type = self.type,
+                        data_product = data,
+                    ).order_by("-created_at").first()
 
-                #     delta = datetime.timedelta(days=1)
-                #     current_time = datetime.datetime.now()
-
-                #     if not analytical_value:
-                #         raise Exception("values does not exists")
-                #     if int(current_time.timestamp()) - int(analytical_value.created_at.timestamp()) > int(delta.total_seconds()):
-                #         raise Exception("values are of previous day")
-                #     values_created = False
-                # except:
-                analytical_value = AnalyticalValue(
-                    type = self.type,
-                    data_product = data,
-                    created_at = datetime.datetime.now()-datetime.timedelta(days=8)
-                )
-                    # created_at = datetime.datetime.now()
+                    if not analytical_value:
+                        raise Exception("values does not exists")
+                    if current_timestamp - int(analytical_value.created_at.timestamp()) > delta_in_secs:
+                        raise Exception("values are of previous day")
+                    values_created = False
+                except:
+                    analytical_value = AnalyticalValue(
+                        type = self.type,
+                        data_product = data,
+                        created_at = current_time
+                    )
+                        # created_at = datetime.datetime.now()-datetime.timedelta(days=8)
 
                 analytical_value.data_product = data
                 analytical_value.Impressions = get_index_or_none(Impressions, i, None)
@@ -293,6 +309,7 @@ class ProcessSheetData():
                     analytical_values_created.append(analytical_value)
                 else:
                     analytical_values_exists.append(analytical_value)
+                print(f"analytics #{i}")
 
         AnalyticalValue.objects.bulk_update(analytical_values_exists, fields=[
             "Impressions",

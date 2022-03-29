@@ -2,25 +2,29 @@ import datetime
 
 def get_index_or_none(list, i, empty_value=None):
     try:
-        if str(list[i]) == "nan":
+        value = list[i]
+        if str(value) == "nan":
             return empty_value
-        return list[i]
+        return value
     except:
         return empty_value
 
 
 def get_percent_or_none(percent, value, empty_value=None):
     try:
-        return ((float(percent) / 100) * float(value)) + float(value)
+        value = float(value)
+        percent = float(percent)
+        return ((percent / 100) * value) + value
     except:
         return empty_value
 
 
 def str_to_date(date_string, empty_value=None):
     try:
-        year = str(date_string).split('.')[0][0:4]
-        month = str(date_string).split('.')[0][4:6]
-        day = str(date_string).split('.')[0][6:8]
+        date_string = str(date_string).split('.')[0]
+        year = date_string[0:4]
+        month = date_string[4:6]
+        day = date_string[6:8]
         return datetime.datetime(year=int(year), month=int(month), day=int(day))
     except:
         return empty_value
