@@ -1,0 +1,314 @@
+{% extends 'dashboard/layout.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block head %}
+<style>
+  #client_data_table {
+    border-radius: 20px !important;
+    overflow: hidden;
+  }
+  #client_data_table th {
+    cursor:pointer;
+    min-width: 150px;
+  }
+  #client_data_table thead tr {
+    background-color: #fff;
+  }
+  #client_data_table tbody tr {
+    background-color: #fff;
+  }
+  #client_data_table tbody tr td {
+    padding: 1rem 1rem !important;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    vertical-align: middle;
+  }
+  .page-link.disabled{
+    opacity: 0.8;
+  }
+</style>
+{% endblock %}
+
+{% block heading %} 
+Client Data
+{% endblock %}
+
+
+{% block content %}
+{% comment %} <p class="text-danger">
+  <small>
+    Only 500 data entries will be shown because its a test server.
+  </small>
+</p> {% endcomment %}
+
+{% include "dashboard/template-parts/client_product_data_header.html" %}
+
+<div class="table-responsive">
+  <table id="client_data_table" class="display compact hover nowrap table table-bordered table-striped my-4" style="width: 100%;">
+      <thead>
+          <tr>
+            <th scope="col">
+              #
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Product
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Entity
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Operation
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Campaign Id
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Ad Group Id
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Portfolio Id
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Ad Id (Read only)
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Keyword Id (Read only)
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Product Targeting Id (Read only)
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Campaign Name
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Ad Group Name
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Start Date
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              End Date
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Targeting Type
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              State
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Daily Budget
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              SKU
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              ASIN
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Ad Group Default Bid
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Bid
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Keyword Text
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Match Type
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Bidding Strategy
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              placementProductPage
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              placementTop
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Product Targeting Expression
+              <span class="icon"></span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in data %}
+          <tr>
+            <td>{{entry.id}}</td>
+            <td>{{entry.Product}}</td>
+            <td>{{entry.Entity}}</td>
+            <td>{{entry.Operation}}</td>
+            <td>{{entry.Campaign_Id|int_or_value}}</td>
+            <td>{{entry.Ad_Group_Id|int_or_value}}</td>
+            <td>{{entry.Portfolio_Id|int_or_value}}</td>
+            <td>{{entry.Ad_Id|int_or_value}}</td>
+            <td>{{entry.Keyword_Id|int_or_value}}</td>
+            <td>{{entry.Product_Targeting_Id|int_or_value}}</td>
+            <td>{{entry.Campaign_Name}}</td>
+            <td>{{entry.Ad_Group_Name}}</td>
+            <td>{{entry.Start_Date.date}}</td>
+            <td>{{entry.End_Date.date}}</td>
+            <td>{{entry.Targeting_Type}}</td>
+            <td>{{entry.State}}</td>
+            <td>{{entry.Daily_Budget}}</td>
+            <td>{{entry.SKU}}</td>
+            <td>{{entry.ASIN}}</td>
+            <td>{{entry.Ad_Group_Default_Bid}}</td>
+            <td>{{entry.Bid}}</td>
+            <td>{{entry.Keyword_Text}}</td>
+            <td>{{entry.Match_Type}}</td>
+            <td>{{entry.Bidding_Strategy}}</td>
+            <td>{{entry.placementProductPage}}</td>
+            <td>{{entry.placementTop}}</td>
+            <td>{{entry.Product_Targeting_Expression}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+  </table>
+</div>
+<div class="row my-3">
+  <div class="col-12">
+    {% if data.has_other_pages %}
+      <ul class="pagination justify-content-center">
+        {% if data.has_previous %}
+          <li>
+            <a href="?page=1" class="page-link">&laquo; first</a>
+          </li>
+          <li>
+            <a href="?page={{ data.previous_page_number }}" class="page-link">&laquo;</a>
+          </li>
+        {% else %}
+          <li>
+            <button class="page-link disabled" disabled>&laquo; first</button>
+          </li>
+          <li>
+            <button class="page-link disabled" disabled>&laquo;</button>
+          </li>
+        {% endif %}
+
+        <li>
+          <a class="page-link bg-primary">{{ data.number }}</a>
+        </li>
+
+        {% if data.has_next %}
+          <li>
+            <a href="?page={{ data.next_page_number }}" class="page-link">&raquo;</a>
+          </li>
+          <li>
+            <a href="?page={{ data.paginator.num_pages }}" class="page-link">last &raquo;</a>
+          </li>
+        {% else %}
+          <li>
+            <button class="page-link disabled" disabled>&raquo;</button>
+          </li>
+          <li>
+            <button class="page-link disabled" disabled>&raquo; last</button>
+          </li>
+        {% endif %}
+      </ul>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block scripts %} 
+<!-- DataTables  & Plugins -->
+<script src="{% static 'adminlte/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
+
+<script src="{% static 'adminlte/plugins/jszip/jszip.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+<!-- Page specific script -->
+{% comment %} <script>
+  $(function () {
+    $("#client_data_table").DataTable({
+    //   "responsive": true,
+      // dom: 'Bfrtip',
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+    }).buttons().container().appendTo('#client_data_table_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script> {% endcomment %}
+
+<script>
+  $(function () {
+    const clientDataTable = document.getElementById("client_data_table");
+    let ths = clientDataTable.querySelectorAll("th");
+    ths.forEach((th, i)=>{
+      th.addEventListener("click", (e)=>{
+        ths.forEach((th)=>{
+          let iconCont = th.querySelector(".icon");
+          iconCont.innerHTML = ``;
+        })
+        let iconCont = th.querySelector(".icon");
+        if (th.classList.contains("sorting_desc")) {
+          iconCont.innerHTML = `<i class="fas fa-caret-up"></i>`;
+        } else if (th.classList.contains("sorting_asc")) {
+          iconCont.innerHTML = `<i class="fas fa-caret-down"></i>`;
+        }
+        if (window.location.href.includes(`?o=${i}`)){
+          window.location.href = `${window.location.href.split("?o")[0]}?o=-${i}`;
+        } else {
+          window.location.href = `${window.location.href.split("?o")[0]}?o=${i}`;
+        }
+      })
+    })
+  });
+
+  let analyticSelectInput = document.getElementById("analytic-field-select");
+  analyticSelectInput.addEventListener("change", ()=>{
+    let url = `{% url 'dashboard:ViewClientData' client_id=client.id data_type=data_type %}${analyticSelectInput.value}/`
+    if (analyticSelectInput.value === "-"){
+      url = `{% url 'dashboard:ViewClientData' client_id=client.id data_type=data_type %}`
+    }
+    window.location.href = url;
+  })
+</script>
+{% endblock %}
