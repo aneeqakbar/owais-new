@@ -33,7 +33,7 @@ class ProcessSheetData():
             else:
                 return data
 
-    def commit_product_data(self, dataframe):
+    def commit_product_data(self, dataframe, date=datetime.datetime.now()):
 
         Product = dataframe.get("Product", None)
         Entity = dataframe.get("Entity", None)
@@ -268,7 +268,8 @@ class ProcessSheetData():
             current_Entity = get_index_or_none(Entity, i, None)
             # Campaign Name Ad Group Name	Start Date	End Date	Targeting Type
 
-            if (current_Ad_Id or current_Keyword_Id or current_Product_Targeting_Id) and current_campaign_id:
+            if (current_Ad_Id or current_Keyword_Id or current_Product_Targeting_Id)\
+                and current_campaign_id and (not "Negative" in current_Entity):
                 values_created = True
                 data = DataProduct.objects.get(
                     client = self.client,
@@ -285,18 +286,19 @@ class ProcessSheetData():
                     analytical_value = AnalyticalValue.objects.filter(
                         type = self.type,
                         data_product = data,
+                        created_at = date,
                     ).order_by("-created_at").first()
 
                     if not analytical_value:
                         raise Exception("values does not exists")
-                    if current_timestamp - int(analytical_value.created_at.timestamp()) > delta_in_secs:
-                        raise Exception("values are of previous day")
+                    # if current_timestamp - int(analytical_value.created_at.timestamp()) > delta_in_secs:
+                    #     raise Exception("values are of previous day")
                     values_created = False
                 except:
                     analytical_value = AnalyticalValue(
                         type = self.type,
                         data_product = data,
-                        created_at = current_time
+                        created_at = date
                     )
                         # created_at = datetime.datetime.now()-datetime.timedelta(days=8)
 

@@ -89,7 +89,9 @@
                 </div>
               </div>
                 {% csrf_token %}
-                <input type="file" class="form-control my-3" name="file">
+                <input type="file" class="form-control my-3" name="file" style="height: auto !important;">
+                <label for="date">Data Date:</label>
+                <input type="date" class="form-control mb-3" name="date" id="date">
                 <div class="row my-3">
                   <div class="col-6 text-start">
                       <button type="submit" class="btn btn-primary">Upload</button>
