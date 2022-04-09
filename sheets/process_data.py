@@ -103,7 +103,7 @@ class ProcessSheetData():
         current_placementProductPage = ""
         current_placementTop = ""
         # for i in range(100):
-        for i in range(1000):
+        for i in range(len(dataframe)):
             placementProductPage = str(get_index_or_none(Percentage, i, ""))
             placementTop = str(get_index_or_none(Percentage, i+1, ""))
             if len(placementProductPage) > 0 and len(placementTop) > 0:
@@ -151,8 +151,8 @@ class ProcessSheetData():
             current_Keyword_Id = get_index_or_none(Keyword_Id, i, None)
             current_Product_Targeting_Id = get_index_or_none(Product_Targeting_Id, i, None)
             current_Entity = get_index_or_none(Entity, i, None)
-            if "Negative" in current_Entity:
-                print("is Negative")
+            # if "Negative" in current_Entity:
+            #     print("is Negative")
             if (current_Ad_Id or current_Keyword_Id or current_Product_Targeting_Id)\
                 and current_campaign_id and (not "Negative" in current_Entity):
 
@@ -256,7 +256,7 @@ class ProcessSheetData():
         delta_in_secs = datetime.timedelta(days=1).total_seconds()
         current_timestamp = int(datetime.datetime.now().timestamp())
         current_time = datetime.datetime.now()
-        for i in range(1000):
+        for i in range(len(dataframe)):
             current_campaign_id = ""
             _value = get_index_or_none(Campaign_Id, i, None)
             if _value:
@@ -280,7 +280,6 @@ class ProcessSheetData():
                     Product_Targeting_Id = current_Product_Targeting_Id,
                     sheet_name = self.sheet,
                 )
-                # data = data_instances[i]
 
                 try:
                     analytical_value = AnalyticalValue.objects.filter(
@@ -402,7 +401,7 @@ class ProcessSheetData():
         current_Bidding_Strategy = ""
         
         # for i in range(100):
-        for i in range(1000):
+        for i in range(len(dataframe)):
             _value = get_index_or_none(Campaign_Id, i, None)
             if _value:
                 current_campaign_id = _value
