@@ -19,9 +19,9 @@
     </div>
     <div class="col-12 text-right">
         {% if data_type == "product" %}
-        {% comment %} <a href="{% url 'dashboard:ViewClientData' client_id=client.id data_type='brand' %}" class="btn btn-warning">
+        <a href="{% url 'dashboard:ViewClientData' client_id=client.id data_type='brand' %}" class="btn btn-warning">
             View Brand Data
-        </a> {% endcomment %}
+        </a>
         {% elif data_type == "brand" %}
         <a href="{% url 'dashboard:ViewClientData' client_id=client.id data_type='product' %}" class="btn btn-warning">
             View Product Data

@@ -52,108 +52,116 @@ Client Data
               #
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
+            <th class="text-no-oveflow">
               Product
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
+            <th class="text-no-oveflow">
               Entity
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
+            <th class="text-no-oveflow">
               Operation
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
-              Campaign Id
+            <th class="text-no-oveflow">
+              Campaign_Id
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
-              Ad Group Id
+            <th class="text-no-oveflow">
+              Draft_Campaign_Id
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
-              Portfolio Id
+            <th class="text-no-oveflow">
+              Portfolio_Id
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
-              Ad Id (Read only)
+            <th class="text-no-oveflow">
+              Ad_Group_Id
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
-              Keyword Id (Read only)
+            <th class="text-no-oveflow">
+              Keyword_Id
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
-              Product Targeting Id (Read only)
+            <th class="text-no-oveflow">
+              Product_Targeting_Id
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
-              Campaign Name
+            <th class="text-no-oveflow">
+              Campaign_Name
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
-              Ad Group Name
+            <th class="text-no-oveflow">
+              Start_Date
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
-              Start Date
+            <th class="text-no-oveflow">
+              End_Date
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
-              End Date
-              <span class="icon"></span>
-            </th>
-            <th class="text-no-overflow">
-              Targeting Type
-              <span class="icon"></span>
-            </th>
-            <th class="text-no-overflow">
+            <th class="text-no-oveflow">
               State
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
-              Daily Budget
+            <th class="text-no-oveflow">
+              Budget_Type
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
-              SKU
+            <th class="text-no-oveflow">
+              Budget
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
-              ASIN
+            <th class="text-no-oveflow">
+              Bid_Optimization
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
-              Ad Group Default Bid
+            <th class="text-no-oveflow">
+              Bid_Multiplier
               <span class="icon"></span>
             </th>
-            <th class="text-no-overflow">
+            <th class="text-no-oveflow">
               Bid
               <span class="icon"></span>
             </th>
             <th class="text-no-overflow">
-              Keyword Text
+              Keyword_Text
               <span class="icon"></span>
             </th>
             <th class="text-no-overflow">
-              Match Type
+              Match_Type
               <span class="icon"></span>
             </th>
             <th class="text-no-overflow">
-              Bidding Strategy
+              Product_Targeting_Expression
               <span class="icon"></span>
             </th>
             <th class="text-no-overflow">
-              placementProductPage
+              Ad_Format
               <span class="icon"></span>
             </th>
             <th class="text-no-overflow">
-              placementTop
+              Landing_Page_URL
               <span class="icon"></span>
             </th>
             <th class="text-no-overflow">
-              Product Targeting Expression
+              Landing_Page_Asins
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Brand_Entity_Id
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Brand_Name
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Brand_Logo_Asset_Id
+              <span class="icon"></span>
+            </th>
+            <th class="text-no-overflow">
+              Brand_Logo_URL
               <span class="icon"></span>
             </th>
           </tr>
@@ -165,29 +173,31 @@ Client Data
             <td>{{entry.Product}}</td>
             <td>{{entry.Entity}}</td>
             <td>{{entry.Operation}}</td>
-            <td>{{entry.Campaign_Id|int_or_value}}</td>
-            <td>{{entry.Ad_Group_Id|int_or_value}}</td>
-            <td>{{entry.Portfolio_Id|int_or_value}}</td>
-            <td>{{entry.Ad_Id|int_or_value}}</td>
-            <td>{{entry.Keyword_Id|int_or_value}}</td>
-            <td>{{entry.Product_Targeting_Id|int_or_value}}</td>
+            <td>{{entry.Campaign_Id}}</td>
+            <td>{{entry.Draft_Campaign_Id}}</td>
+            <td>{{entry.Portfolio_Id}}</td>
+            <td>{{entry.Ad_Group_Id}}</td>
+            <td>{{entry.Keyword_Id}}</td>
+            <td>{{entry.Product_Targeting_Id}}</td>
             <td>{{entry.Campaign_Name}}</td>
-            <td>{{entry.Ad_Group_Name}}</td>
-            <td>{{entry.Start_Date.date}}</td>
-            <td>{{entry.End_Date.date}}</td>
-            <td>{{entry.Targeting_Type}}</td>
+            <td>{{entry.Start_Date}}</td>
+            <td>{{entry.End_Date}}</td>
             <td>{{entry.State}}</td>
-            <td>{{entry.Daily_Budget}}</td>
-            <td>{{entry.SKU}}</td>
-            <td>{{entry.ASIN}}</td>
-            <td>{{entry.Ad_Group_Default_Bid}}</td>
+            <td>{{entry.Budget_Type}}</td>
+            <td>{{entry.Budget}}</td>
+            <td>{{entry.Bid_Optimization}}</td>
+            <td>{{entry.Bid_Multiplier}}</td>
             <td>{{entry.Bid}}</td>
             <td>{{entry.Keyword_Text}}</td>
             <td>{{entry.Match_Type}}</td>
-            <td>{{entry.Bidding_Strategy}}</td>
-            <td>{{entry.placementProductPage}}</td>
-            <td>{{entry.placementTop}}</td>
             <td>{{entry.Product_Targeting_Expression}}</td>
+            <td>{{entry.Ad_Format}}</td>
+            <td>{{entry.Landing_Page_URL}}</td>
+            <td>{{entry.Landing_Page_Asins}}</td>
+            <td>{{entry.Brand_Entity_Id}}</td>
+            <td>{{entry.Brand_Name}}</td>
+            <td>{{entry.Brand_Logo_Asset_Id}}</td>
+            <td>{{entry.Brand_Logo_URL}}</td>
           </tr>
           {% endfor %}
         </tbody>

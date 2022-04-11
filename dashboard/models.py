@@ -219,6 +219,7 @@ class DataBrand(models.Model):
     Start_Date = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     End_Date = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     State = models.TextField(null=True, blank=True)
+    Campaign_Serving_Status = models.TextField(null=True, blank=True)
     Budget_Type = models.TextField(null=True, blank=True)
     Budget = models.TextField(null=True, blank=True)
     Bid_Optimization = models.TextField(null=True, blank=True)
@@ -238,6 +239,10 @@ class DataBrand(models.Model):
     Creative_ASINs = models.TextField(null=True, blank=True)
     Video_Media_Ids = models.TextField(null=True, blank=True)
     Creative_Type = models.TextField(null=True, blank=True)
+    Campaign_Name = models.TextField(null=True, blank=True)
+    Campaign_State = models.TextField(null=True, blank=True)
+    Resolved_Product_Targeting_Expression = models.TextField(null=True, blank=True)
+    Landing_Page_Type = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=False, default=datetime.now())
 
     def __str__(self):
@@ -346,7 +351,6 @@ class DataBrand(models.Model):
             chart_data['data'].append(f'{sum}')
             chart_data['labels'].append(f'Day {i+1}')
         return chart_data
-
 
 
 # Product Sheet Fields

@@ -34,13 +34,16 @@ class UploadClientData(View):
         new_name = f"{datetime.datetime.now().timestamp()}--{uploaded_file._name}"
         filename = fs.save(new_name, uploaded_file)
         file_path = f"{CLIENT_SHEET_FOLDER}{filename}"
-
-        file_process = ProcessSheetData(file_path=file_path, type="P", client=client)
         date = date.split("-")
         date = datetime.datetime(year=int(date[0]), month=int(date[1]), day=int(date[2]))
+
+        file_process = ProcessSheetData(file_path=file_path, type="P", client=client)
         data = file_process.process_data(commit=False)
         file_process.commit_product_data(dataframe = data, date=date)
-        # file_process.commit_brand_data(data = data)
+
+        file_process = ProcessSheetData(file_path=file_path, type="B", client=client)
+        data = file_process.process_data(commit=False)
+        file_process.commit_brand_data(dataframe = data, date=date)
 
         # file_process = ProcessSheetData(file_path=file_path, type="B", client=client)
         # file_process.process_data(commit=True)
