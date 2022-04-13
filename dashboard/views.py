@@ -137,6 +137,16 @@ class ViewClientData(View):
 class ViewClientDataAnalytics(View):
     def get(self, request, client_id, data_type, field):
         page = request.GET.get("page", 1)
+        order_filter = request.GET.get("o", None)
+        fields = [
+            "Entity",
+            "Campaign_Id",
+            "Ad_Group_Id",
+            "Keyword_Id",
+            "Product_Targeting_Id",
+            "Keyword_Text",
+            "Product_Targeting_Expression",
+        ]
         template_name = 'dashboard/client_data_view.html'
         client = Client.objects.get(id = client_id)
         if data_type == "product":
@@ -147,6 +157,15 @@ class ViewClientDataAnalytics(View):
             data = client.data_brands.all().order_by("-id")
         else:
             raise Http404()
+
+        try:
+            if order_filter:
+                if str(order_filter).startswith("-"):
+                    data = data.order_by(f"{fields[int(order_filter)]}")
+                else:
+                    data = data.order_by(f"-{fields[int(order_filter)]}")
+        except:
+            pass
 
         paginator = Paginator(data, 20)
         try:

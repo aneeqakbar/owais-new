@@ -52,28 +52,48 @@ Client {{field}} Data
     <table id="client_data_table" class="shadow-sm display compact hover nowrap table table-bordered table-striped my-4" style="width: 100%;">
         <thead>
             <tr>
-              <th scope="col" onclick="sortTable(0)">
-                #
+              <th class="text-no-overflow" onclick="sortTable(1)">
+                Entity
                 <span class="icon"></span>
               </th>
               <th class="text-no-overflow" onclick="sortTable(1)">
-                Name
+                Campaign ID
                 <span class="icon"></span>
               </th>
               <th class="text-no-overflow" onclick="sortTable(2)">
-                24h %
+                Add Group ID
                 <span class="icon"></span>
               </th>
               <th class="text-no-overflow" onclick="sortTable(3)">
-                7d %
+                Keyword ID
                 <span class="icon"></span>
               </th>
               <th class="text-no-overflow" onclick="sortTable(4)">
+                Product Targeting ID
+                <span class="icon"></span>
+              </th>
+              <th class="text-no-overflow" style="min-width: 150px; width: 300px;">
+                Keyword Text
+                <span class="icon"></span>
+              </th>
+              <th class="text-no-overflow" style="min-width: 150px; width: 300px;">
+                Product Targeting Expression
+                <span class="icon"></span>
+              </th>
+              <th class="text-no-overflow" style="min-width: 150px; width: 300px;">
+                24h %
+                <span class="icon"></span>
+              </th>
+              <th class="text-no-overflow" style="min-width: 150px; width: 300px;">
+                7d %
+                <span class="icon"></span>
+              </th>
+              <th class="text-no-overflow" style="min-width: 150px; width: 300px;">
                 Yearly %
                 <span class="icon"></span>
               </th>
               <th class="text-no-overflow" style="min-width: 150px; width: 300px;">
-                Last 7 Days
+                Last 7 days
                 <span class="icon"></span>
               </th>
             </tr>
@@ -81,16 +101,13 @@ Client {{field}} Data
           <tbody>
             {% for entry in data %}
             <tr>
-                <td>{{forloop.counter}}</td>
-                <td>
-                  <span>
-                    {{field}}
-                  </span>
-                  <br>
-                  <small class="text-muted">
-                    {{entry.get_unique_id|int_or_value}}
-                  </small>
-                </td>
+                <td>{{entry.Entity}}</td>
+                <td>{{entry.Campaign_Id|int_or_value}}</td>
+                <td>{{entry.Ad_Group_Id|int_or_value}}</td>
+                <td>{{entry.Keyword_Id|int_or_value}}</td>
+                <td>{{entry.Product_Targeting_Id|int_or_value}}</td>
+                <td>{{entry.Keyword_Text}}</td>
+                <td>{{entry.Product_Targeting_Expression}}</td>
                 {% with entry|get_field_analytics:field as value %}
                   <td>
                       {% if value.daily|compareInt:"0" %}
@@ -216,7 +233,7 @@ Client {{field}} Data
 </script> {% endcomment %}
 
 <script>
-  function sortTable(n) {
+  {% comment %} function sortTable(n) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById("client_data_table");
     switching = true;
@@ -269,8 +286,30 @@ Client {{field}} Data
         }
       }
     }
-  }
-
+  } {% endcomment %}
+  $(function () {
+    const clientDataTable = document.getElementById("client_data_table");
+    let ths = clientDataTable.querySelectorAll("th");
+    ths.forEach((th, i)=>{
+      th.addEventListener("click", (e)=>{
+        ths.forEach((th)=>{
+          let iconCont = th.querySelector(".icon");
+          iconCont.innerHTML = ``;
+        })
+        let iconCont = th.querySelector(".icon");
+        if (th.classList.contains("sorting_desc")) {
+          iconCont.innerHTML = `<i class="fas fa-caret-up"></i>`;
+        } else if (th.classList.contains("sorting_asc")) {
+          iconCont.innerHTML = `<i class="fas fa-caret-down"></i>`;
+        }
+        if (window.location.href.includes(`?o=${i}`)){
+          window.location.href = `${window.location.href.split("?o")[0]}?o=-${i}`;
+        } else {
+          window.location.href = `${window.location.href.split("?o")[0]}?o=${i}`;
+        }
+      })
+    })
+  });
   let analyticSelectInput = document.getElementById("analytic-field-select");
   analyticSelectInput.addEventListener("change", ()=>{
     let url = `{% url 'dashboard:ViewClientData' client_id=client.id data_type=data_type %}${analyticSelectInput.value}/`

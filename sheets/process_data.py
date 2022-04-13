@@ -103,7 +103,7 @@ class ProcessSheetData():
         current_placementProductPage = ""
         current_placementTop = ""
         # for i in range(100):
-        for i in range(len(dataframe)):
+        for i in range(1000):
             placementProductPage = str(get_index_or_none(Percentage, i, ""))
             placementTop = str(get_index_or_none(Percentage, i+1, ""))
             if len(placementProductPage) > 0 and len(placementTop) > 0:
@@ -259,7 +259,7 @@ class ProcessSheetData():
         # current_time = datetime.datetime.now()
         print(f"saving and updating of data done")
         current_campaign_id = ""
-        for i in range(len(dataframe)):
+        for i in range(1000):
             _value = get_index_or_none(Campaign_Id, i, None)
             if _value:
                 current_campaign_id = _value
@@ -315,6 +315,7 @@ class ProcessSheetData():
                 analytical_value.Acos = get_index_or_none(Acos, i, None)
                 analytical_value.CPC = get_index_or_none(CPC, i, None)
                 analytical_value.ROAS = get_index_or_none(ROAS, i, None)
+                analytical_value.Bid = get_index_or_none(Bid, i, None)
 
                 if values_created:
                     analytical_values_created.append(analytical_value)
@@ -419,7 +420,7 @@ class ProcessSheetData():
         current_Entity = ""
 
         # for i in range(100):
-        for i in range(len(dataframe)):
+        for i in range(1000):
             _value = get_index_or_none(Campaign_Id, i, None)
             if _value:
                 current_Campaign_Id = _value
@@ -595,7 +596,7 @@ class ProcessSheetData():
         current_Product_Targeting_Id = ""
         current_Entity = ""
         # for i in range(100):
-        for i in range(len(dataframe)):
+        for i in range(1000):
             _value = get_index_or_none(Campaign_Id, i, None)
             if _value:
                 current_Campaign_Id = _value
@@ -659,6 +660,7 @@ class ProcessSheetData():
                 analytical_value.Acos = get_index_or_none(Acos, i, None)
                 analytical_value.CPC = get_index_or_none(CPC, i, None)
                 analytical_value.ROAS = get_index_or_none(ROAS, i, None)
+                analytical_value.Bid = get_index_or_none(Bid, i, None)
 
                 if values_created:
                     analytical_values_created.append(analytical_value)

@@ -39,6 +39,7 @@ class AnalyticalValue(models.Model):
     Acos = models.TextField(null=True, blank=True)
     CPC = models.TextField(null=True, blank=True)
     ROAS = models.TextField(null=True, blank=True)
+    Bid = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=False, default=datetime.now())
 
     def __str__(self):
@@ -105,7 +106,7 @@ class DataProduct(models.Model):
             return self.Product_Targeting_Expression
 
     def get_field_analytics(self, field_name=''):
-        fields = ['Impressions', 'Clicks', 'Click_through_Rate', 'Spend', 'Sales', 'Orders', 'Units', 'Conversion_Rate', 'Acos', 'CPC', 'ROAS']
+        fields = ['Impressions', 'Clicks', 'Click_through_Rate', 'Spend', 'Sales', 'Orders', 'Units', 'Conversion_Rate', 'Acos', 'CPC', 'ROAS', 'Bid']
         if not field_name or not field_name in fields:
             return {
                 "daily": 0,
@@ -256,7 +257,7 @@ class DataBrand(models.Model):
             return self.Product_Targeting_Expression
 
     def get_field_analytics(self, field_name=''):
-        fields = ['Impressions', 'Clicks', 'Click_through_Rate', 'Spend', 'Sales', 'Orders', 'Units', 'Conversion_Rate', 'Acos', 'CPC', 'ROAS']
+        fields = ['Impressions', 'Clicks', 'Click_through_Rate', 'Spend', 'Sales', 'Orders', 'Units', 'Conversion_Rate', 'Acos', 'CPC', 'ROAS', 'Bid']
         if not field_name or not field_name in fields:
             return {
                 "daily": 0,

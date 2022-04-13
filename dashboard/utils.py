@@ -9,7 +9,10 @@ def calculate_change(new, old):
 
 
 def get_number(value):
-    return re.sub("[^0-9.+-]", '', str(value))
+    number = re.sub("[^0-9.+-]", '', str(value))
+    if number:
+        return number
+    return "0"
 
 
 
